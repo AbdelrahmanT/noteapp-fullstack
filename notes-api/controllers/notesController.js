@@ -1,5 +1,5 @@
 import { getDBConnection } from "../database/db.js";
-
+// Notes CRUD but i didnt implement any type of user IDing
 export async function getAllNotes(req,res){
     const db = await getDBConnection()
 
@@ -41,9 +41,7 @@ export async function deleteNote(req,res){
     }catch(err){
         return res.status(500).json({"error": `failure to delete note due to ${err}`})
     }
-
     
-
 }
 
 export async function updateNote(req,res){

@@ -38,9 +38,32 @@ export async function registerUser(req,res){
 
     }catch(err){
         console.error(`error: ${err.message}`)
-        return res.status(400).json({message: "unexpected error while registering"})
+        return res.status(400).json({message: "Unexpected error while registering"})
     }
 
 }
 
 //todo logging in
+
+export async function loginUser(req,res){
+    let {email,password}= req.body;
+    
+    if(!email || !password){
+        return res.status(400).json({message: "All fields must be filled"})
+    }
+    try {
+        const db = await getDBConnection()
+
+        const hashedPassword = db.get(`
+            SELECT passwordHash FROM users WHERE email = ?
+            `,[email])
+        
+        const isMatch = await bcrypt.compare(password, hashedPassword)
+        if(isMatch){
+
+        }
+
+    } catch (error) {
+        
+    }
+}
