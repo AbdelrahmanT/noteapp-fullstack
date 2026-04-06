@@ -54,13 +54,13 @@ export async function loginUser(req,res){
     try {
         const db = await getDBConnection()
 
-        const hashedPassword = db.get(`
+        const hashedPassword = await db.get(`
             SELECT passwordHash FROM users WHERE email = ?
             `,[email])
         
         const isMatch = await bcrypt.compare(password, hashedPassword)
         if(isMatch){
-
+            return res.status(200).json({message: "login successful"})
         }
 
     } catch (error) {
