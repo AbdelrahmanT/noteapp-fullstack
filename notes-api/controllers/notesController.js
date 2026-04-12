@@ -1,4 +1,7 @@
 import { getDBConnection } from "../database/db.js";
+
+
+
 // Notes CRUD but i didnt implement any type of user IDing
 export async function getAllNotes(req,res){
     const db = await getDBConnection()

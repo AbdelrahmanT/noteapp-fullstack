@@ -1,10 +1,12 @@
 import express from 'express'
 import validator from 'validator'
 import {getDBConnection} from '../database/db.js'
-import bcrypt from 'bcryptjs'
+import bcrypt, { hash } from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+
+
 
 export async function registerUser(req,res){
-
 
     let {email, username, password} = req.body;
     
@@ -46,24 +48,42 @@ export async function registerUser(req,res){
 //todo logging in
 
 export async function loginUser(req,res){
-    let {email,password}= req.body;
-    
-    if(!email || !password){
+    let {username,password}= req.body;
+
+    if(!username || !password){
         return res.status(400).json({message: "All fields must be filled"})
     }
     try {
         const db = await getDBConnection()
 
-        const hashedPassword = await db.get(`
-            SELECT passwordHash FROM users WHERE email = ?
-            `,[email])
-        
-        const isMatch = await bcrypt.compare(password, hashedPassword)
-        if(isMatch){
-            return res.status(200).json({message: "login successful"})
+        const {passwordHash} = await db.get(`
+            SELECT passwordHash FROM users WHERE username = ?
+            `,[username])
+         if(!passwordHash){
+            return res.status(400).json({message: "Username or password is incorrect"})
         }
 
+
+        const isMatch = await bcrypt.compare(password, passwordHash)
+        console.log(isMatch)
+        if(!isMatch){
+            return res.status(400).json({message: "Username or password is incorrect"})
+        }
+
+        const user = {
+            name: username
+        }
+        const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET)
+
+        return res.status(200).json({accessToken})
     } catch (error) {
-        
+        console.error(`error: ${err.message}`)
+        return res.status(400).json({message: "Unexpected error while logging in"})
     }
+}
+
+export async function authenticateToken(req,res, next){
+    const authHeader = req.headers
+
+    console.log(authHeader)
 }
