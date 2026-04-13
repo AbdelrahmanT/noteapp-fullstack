@@ -1,7 +1,7 @@
 import express from 'express'
 import validator from 'validator'
 import {getDBConnection} from '../database/db.js'
-import bcrypt, { hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 
@@ -56,34 +56,56 @@ export async function loginUser(req,res){
     try {
         const db = await getDBConnection()
 
-        const {passwordHash} = await db.get(`
+        const exists = await db.get(`
             SELECT passwordHash FROM users WHERE username = ?
             `,[username])
-         if(!passwordHash){
+        if(!exists){
             return res.status(400).json({message: "Username or password is incorrect"})
         }
-
+        const {passwordHash} = exists
 
         const isMatch = await bcrypt.compare(password, passwordHash)
         console.log(isMatch)
         if(!isMatch){
             return res.status(400).json({message: "Username or password is incorrect"})
         }
-
+        const {id} = await db.get(`
+            SELECT id FROM users WHERE username = ?
+            `,[username])
         const user = {
-            name: username
+            user_id: id,
+            username
         }
         const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET)
 
         return res.status(200).json({accessToken})
-    } catch (error) {
+    } catch (err) {
         console.error(`error: ${err.message}`)
         return res.status(400).json({message: "Unexpected error while logging in"})
     }
 }
 
 export async function authenticateToken(req,res, next){
-    const authHeader = req.headers
+    //header will be Bearer TOKEN
+    try {
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+        if(!token){
+            return res.status(401).json({message: "recieved empty token"})
+        }
 
-    console.log(authHeader)
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET , (err, user)=>{
+            if(err){
+                console.error(`error: ${err.message}`)
+                return res.status(403).json({message: "invalid token"})
+            }
+            console.log(user)
+            req.user = user
+            return next()
+        })
+    } catch (err) {
+        
+        console.error(`error: ${err.message}`)
+        return res.status(400).json({message: "Unexpected error while authorizing"})
+    }
 }

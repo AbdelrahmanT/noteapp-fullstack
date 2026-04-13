@@ -12,8 +12,8 @@ export async function getDBConnection(){
         `
         CREATE TABLE IF NOT EXISTS users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT NOT NULL,
-        username TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        username TEXT NOT NULL UNIQUE,
         passwordHash TEXT NOT NULL
         )
         `
