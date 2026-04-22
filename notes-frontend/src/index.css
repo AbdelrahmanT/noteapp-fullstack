@@ -1,0 +1,34 @@
+:root{
+  background-color: #184E77;
+  color: #D9ED92;
+}
+.register-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.register-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 10%;
+  width: 30%;
+  height: 20rem;
+  background: linear-gradient(#52B69A,#99D98C);
+  
+  border-radius: 30px;
+  
+}
+
+.register-form input{
+  width: 80%;
+  margin-bottom: 2rem;
+  height: 1.5rem;
+  background-color: #D9ED92;
+  border-width: 0;
+  border-radius: 5px;
+  
+}

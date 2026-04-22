@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 
 
 export async function registerUser(req,res){
-
+    
     let {email, username, password} = req.body;
     
     if(!email || !username || !password){
@@ -40,7 +40,7 @@ export async function registerUser(req,res){
 
     }catch(err){
         console.error(`error: ${err.message}`)
-        return res.status(400).json({message: "Unexpected error while registering"})
+        return res.status(400).json({error: "Unexpected error while registering"})
     }
 
 }
