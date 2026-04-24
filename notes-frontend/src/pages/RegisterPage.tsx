@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {registerUser} from "../services/authService.tsx"
 
 export default function RegisterPage(){
@@ -6,9 +7,11 @@ export default function RegisterPage(){
     const [buttonStatus, setButtonStatus] = React.useState("idle")
     const [registerStatus, setRegisterStatus] = React.useState("")
 
+    const navigate = useNavigate()
+
     async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>){
         e.preventDefault()
-        setButtonStatus("Submitting")
+        setButtonStatus("submitting")
         registerUser(registerFormData)
             .then(data=>{
                 console.log(data)
@@ -34,12 +37,11 @@ export default function RegisterPage(){
     }
 
     return <>
-    <div className="register-container">
         <h1>Register</h1>
         <h3>{registerStatus}</h3>
 
 
-        <form onSubmit={handleSubmit} className="register-form" >
+        <form onSubmit={handleSubmit} className="auth-form"  >
             <input
                 type="username"
                 name="username"
@@ -65,12 +67,10 @@ export default function RegisterPage(){
                 required
             />
             <button disabled={buttonStatus==="submitting"}>
-                {buttonStatus === "submitting" ? "Registering" : "Register"}
+                {buttonStatus === "submitting" ? "Registering...." : "Register"}
             </button>
-
+            <a href="" onClick={()=> navigate('/login')}>Have an account? Login.</a>
         </form>
-
-    </div>
     
 
 

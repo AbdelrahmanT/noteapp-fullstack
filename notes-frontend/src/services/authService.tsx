@@ -5,8 +5,22 @@ type User = {
     password: string,
 }
 
-export async function login(user: User){
-
+export async function loginUser(user: Omit<User, "email">){
+    console.log(JSON.stringify(user))
+    const res = await fetch("http://localhost:3000/api/auth/login",
+        {method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user),
+    }
+    )
+    const data = await res.json()
+    console.log(data)
+    if(!res.ok){
+        throw data.error
+    } 
+    return data.message
 }
 
 export async function registerUser(user: User){
@@ -28,5 +42,5 @@ export async function registerUser(user: User){
 }
 
 export async function logout(user: User){
-
+    
 }
