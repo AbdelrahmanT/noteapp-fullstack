@@ -3,6 +3,7 @@ import {authenticateToken} from "../controllers/authController.js"
 import express from 'express'
 
 export const notesRouter = express.Router()
+// this route starts with /api/notes
 notesRouter.use(authenticateToken)
 notesRouter.get('/', getAllNotes)
 notesRouter.post('/', addNote)

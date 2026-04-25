@@ -1,31 +1,36 @@
 import React from "react";
 import {loginUser} from "../services/authService.tsx"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, replace } from "react-router-dom";
 
 export default function LoginPage(){
     const [loginFormData, setLoginFormData] = React.useState({username: "", password: ""})
     const [buttonStatus, setButtonStatus] = React.useState("idle")
     const [loginStatus, setLoginStatus] = React.useState("")
 
+    const location = useLocation()
     const navigate = useNavigate()
     
+    const navDestination = location.state?.from || "/user" 
+
     async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>){
         e.preventDefault()
         setButtonStatus("submitting")
         loginUser(loginFormData)
-            .then(data=>{
-                console.log(data)
-                setLoginStatus(data)
+            .then(()=>{
+                setLoginStatus("logged in")
+                console.log(navDestination)
                 //navigate later
+                navigate(navDestination)
             })
             .catch(err=>{
-                console.error(err)
                 setLoginStatus(typeof err === "string"? err: "Unexpected error" )
                 
             })
             .finally(()=>{
                 setButtonStatus("idle")
             })
+        const accessToken = localStorage.getItem('accessToken')
+        console.log(accessToken)
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>){

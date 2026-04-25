@@ -6,12 +6,20 @@ import { getDBConnection } from "../database/db.js";
 export async function getAllNotes(req,res){
     const db = await getDBConnection()
 
-    const notes = await db.all(
+    try {
+        const notes = await db.all(
         `SELECT * FROM notes WHERE user_ID = ?`,
         [req.user.user_id]
     )
-
+    
     return res.status(200).json({notes})
+
+    } catch (error) {
+        console.error(`error on getting notes ${err}`)
+        return res.status(500).json({message: "failure to retrieve notes"})
+    }
+
+    
 }
 
 export async function addNote(req,res){
@@ -27,8 +35,8 @@ export async function addNote(req,res){
         return res.status(201).json({id : result.lastID,title,content})
 
     }catch(err){
-        console.error(err)
-        return res.status(500).json({message: `failure to add note`})
+        console.error(`error on adding note ${err}`)
+        return res.status(500).json({error: `failure to add note`})
     }
     
 }
@@ -45,7 +53,8 @@ export async function deleteNote(req,res){
     
         return res.status(201).json({"message": "note deleted"})
     }catch(err){
-        return res.status(500).json({"error": `failure to delete note due to ${err}`})
+        console.error(`error on deleting note ${err}`)
+        return res.status(500).json({error: `failure to delete note`})
     }
     
 }
@@ -63,6 +72,7 @@ export async function updateNote(req,res){
 
         res.status(201).json({'message': "note updated"})
     }catch(err){
-        res.status(500).json({"error":`couldnt update note due to ${err}`})
+        console.error(`error on update ${err}`)
+        res.status(500).json({error : "failure to update note"})
     }
 }

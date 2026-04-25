@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom"
 
 type User = {
     username: string ,
@@ -5,8 +6,9 @@ type User = {
     password: string,
 }
 
+
+
 export async function loginUser(user: Omit<User, "email">){
-    console.log(JSON.stringify(user))
     const res = await fetch("http://localhost:3000/api/auth/login",
         {method: "post",
         headers: {
@@ -16,11 +18,10 @@ export async function loginUser(user: Omit<User, "email">){
     }
     )
     const data = await res.json()
-    console.log(data)
     if(!res.ok){
-        throw data.error
-    } 
-    return data.message
+        throw data.error || data.message
+    }
+    localStorage.setItem('accessToken',data.accessToken)
 }
 
 export async function registerUser(user: User){
@@ -41,6 +42,7 @@ export async function registerUser(user: User){
     return data.message
 }
 
-export async function logout(user: User){
-    
+export async function logout(){
+    localStorage.removeItem("accessToken")
+    Navigate({to : "/login"})
 }
