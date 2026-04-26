@@ -48,7 +48,7 @@ export default function LoginPage(){
 
         <form onSubmit={handleSubmit} className="auth-form" >
             <input
-                type="username"
+                type="text"
                 name="username"
                 placeholder="Username"
                 value={loginFormData.username}

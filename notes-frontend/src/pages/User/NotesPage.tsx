@@ -1,6 +1,8 @@
 import React from "react";
 import { getNotes } from "../../services/userService";
 import SearchBar from "../../components/SearchBar";
+import NoteCreator from "../../components/NoteCreator";
+
 
 export default function NotesPage(){
     const [loading, setLoading] = React.useState(false)
@@ -27,12 +29,6 @@ export default function NotesPage(){
 
 
 
-
-
-
-
-
-
     if(loading){
         return <h1>Loading...</h1>
     }
@@ -44,5 +40,6 @@ export default function NotesPage(){
         <p>alot of notes</p>:
         <h1>no notes bruh</h1>
     }
+    {/* <NoteCreator /> */}
     </>
 }

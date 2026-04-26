@@ -14,6 +14,12 @@ export default function AuthRequired(){
                     }}
                 />
     }
-    return <Outlet/>
+    return <div className="site-wrapper">
+                <main>
+                    <Outlet/>
+
+                </main>
+
+            </div>
 
 }
