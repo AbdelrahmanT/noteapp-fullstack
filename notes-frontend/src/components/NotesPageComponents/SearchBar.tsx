@@ -20,7 +20,7 @@ export default function SearchBar({query, setQuery}: SearchBarProps){
     
     <input
         type="text"
-        name="searchBar"
+        name="query"
         id="searchBar"
         placeholder="Look up your notes here"
         value={query}

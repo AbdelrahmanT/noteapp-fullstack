@@ -18,3 +18,7 @@ export async function getNotes(){
     
     return data.notes
 }
+
+export async function addNote(params:type) {
+    fetch('')
+}

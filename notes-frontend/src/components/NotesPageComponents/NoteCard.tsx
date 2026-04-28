@@ -7,7 +7,6 @@ type NoteCardProps = {
 
 export default function Note({title, noteText}: NoteCardProps){
 
-    
 
     return (
         <div className="noteCard">

@@ -3,15 +3,17 @@ import React from "react";
 type NoteCreatorProps = {
     note : {title : string; text: string}
     setNote: React.Dispatch<React.SetStateAction<{
-    title: string;
-    text: string;
-}>>
+        title: string;
+        text: string;
+    }>>
 }
 
-export default function NoteCreator({note, setNote} : NoteCreatorProps){
-    // const [note, setNote] = React.useState({title: "" , note: "" })
+export default function NoteCreator(/*{note, setNote} : NoteCreatorProps*/){
+    const [note, setNote] = React.useState({title: "" , text: "" })
+
     const [isActive, setIsActive] = React.useState(false)
-    
+    const formRef = React.useRef<HTMLFormElement | null>(null)
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const {name, value} = e.target
         setNote(prev=>({
@@ -19,18 +21,33 @@ export default function NoteCreator({note, setNote} : NoteCreatorProps){
             [name] : value
         }))
     }
+    console.log(note)
     function handleClick(e: React.MouseEvent<HTMLFormElement>) {
         setIsActive(prev=>!prev)
     }
 
+    React.useEffect(()=>{
+        const handleTitleInput = (e: MouseEvent)=>{
+            if( e.target instanceof Node && !formRef.current?.contains(e.target )){
+                setIsActive(false)
+                
+                setNote((prev)=>({title: '', text: ''}))
+            }
+         }
+
+         document.addEventListener("mousedown",handleTitleInput )
+
+         return ()=> document.removeEventListener("mousedown", handleTitleInput)
+     },[])
+
     return (
-        <form className={`noteCreator ${isActive ? "isActive" : ""}`} onClick={handleClick}>
+        <form className={`noteCreator ${isActive ? "isActive" : ""}`} onFocus={()=>setIsActive(true)} ref={formRef} >
             { isActive?
                 <input
                 type="text"
-                name="note-title"
+                name="title"
                 className="noteCreator-title"
-                placeholder="Write a note"
+                placeholder="Title"
                 value={note.title}
                 onChange={handleChange}
             />
@@ -41,7 +58,7 @@ export default function NoteCreator({note, setNote} : NoteCreatorProps){
 
             <input
                 type="text"
-                name="note-text"
+                name="text"
                 className="noteCreator-text"
                 placeholder="Write a note"
                 value={note.text}
