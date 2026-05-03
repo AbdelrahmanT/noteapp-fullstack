@@ -13,22 +13,24 @@ type NoteCreatorProps = {
 }
 
 export default function NotesPage(){
-    const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(true)
     const [notes , setNotes] = React.useState([])
     const [query, setQuery] = React.useState("")
     const [newNote, setNewNote] = React.useState({title: "" , text : ""})
 
+    
+
     React.useEffect(()=>{
         async function loadNotes(){
-            setLoading(true)
             try {
                 getNotes().then((notes)=>{
                     setNotes(notes)
-                })
+                }).then(
+                    ()=>{setLoading(false)}
+                )
             } catch (error) {
-                console.error(error)
-            }finally{
-                setLoading(false)
+
+                console.error(`Error on loading notes: ${error}`)
             }
 
         }
@@ -36,12 +38,12 @@ export default function NotesPage(){
 
     }, [])
 
+    console.log(notes)
 
-
+    
     if(loading){
         return <h1>Loading...</h1>
     }
-
     return <>
     <SearchBar query= {query} setQuery={setQuery}/>
     {/* <NoteCreator note = {newNote} setNote = {setNewNote}/> */}
@@ -49,7 +51,7 @@ export default function NotesPage(){
     
     {
         notes.length? 
-        <p>alot of notes</p>:
+        <p>{JSON.stringify(notes)}</p>:
         <h1>no notes bruh</h1>
     }
     </>

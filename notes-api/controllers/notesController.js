@@ -27,7 +27,11 @@ export async function addNote(req,res){
     const db = await getDBConnection()
     try{
         const {title,content} = req.body
+        if(!title || !content ){
+            return res.status(400).json({message: "can't input empty notes"})
+        }
         const {user_id} = req.user
+        
         console.log(req.user)
         const result = await db.run(`
             INSERT INTO notes(title,content,user_ID) VALUES(?,?,?)

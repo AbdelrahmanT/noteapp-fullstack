@@ -6,7 +6,9 @@ type User = {
     password: string,
 }
 
+// export async function isLoggedIn(user: Omit<User, "email">){
 
+// }
 
 export async function loginUser(user: Omit<User, "email">){
     const res = await fetch("http://localhost:3000/api/auth/login",
@@ -19,9 +21,10 @@ export async function loginUser(user: Omit<User, "email">){
     )
     const data = await res.json()
     if(!res.ok){
+        console.error(`error on logging in: ${data.error || data.message}`)
         throw data.error || data.message
     }
-    localStorage.setItem('accessToken',data.accessToken)
+    localStorage.setItem('accessToken', data.accessToken)
 }
 
 export async function registerUser(user: User){

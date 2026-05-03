@@ -19,8 +19,8 @@ export default function LoginPage(){
             .then(()=>{
                 setLoginStatus("logged in")
                 console.log(navDestination)
-                //navigate later
                 navigate(navDestination)
+                //navigate later
             })
             .catch(err=>{
                 setLoginStatus(typeof err === "string"? err: "Unexpected error" )
@@ -29,8 +29,7 @@ export default function LoginPage(){
             .finally(()=>{
                 setButtonStatus("idle")
             })
-        const accessToken = localStorage.getItem('accessToken')
-        console.log(accessToken)
+        
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>){
@@ -63,7 +62,7 @@ export default function LoginPage(){
                 onChange={handleChange}
                 required
             />
-            <button disabled={buttonStatus==="submitting"}>
+            <button type="submit" disabled={buttonStatus==="submitting"}>
                 {buttonStatus === "submitting" ? "logging in..." : "Login"}
             </button>
             <a href="" onClick={()=> navigate('/register')}>Dont have an account? Register</a>

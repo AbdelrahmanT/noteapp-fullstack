@@ -72,6 +72,7 @@ export async function loginUser(req,res){
         const {id} = await db.get(`
             SELECT id FROM users WHERE username = ?
             `,[username])
+        console.log(id)
         const user = {
             user_id: id,
             username
@@ -90,16 +91,34 @@ export async function authenticateToken(req,res, next){
     try {
         const authHeader = req.headers['authorization']
         const token = authHeader && authHeader.split(' ')[1]
+        
         if(!token){
             return res.status(401).json({message: "recieved empty token"})
         }
-
+        const db = await getDBConnection()
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET , (err, user)=>{
             if(err){
-                console.error(`error: ${err.message}`)
+                console.error(`error on jwt verification: ${err.message}`)
                 return res.status(403).json({message: "invalid token"})
             }
-            console.log(user)
+
+
+            async function verify_user(err,user) {
+                const {id} =  await db.get(
+                    `SELECT id FROM users WHERE id = ?`,
+                    [user.user_id]
+                )
+
+                if(!id){
+                    console.error(`error finding user, invalid id , id recieved is: ${id}`)
+                    return res.status(403).json({message: "invalid user"})
+                }
+
+            }
+            verify_user(err,user)
+            
+            
+            
             req.user = user
             return next()
         })
