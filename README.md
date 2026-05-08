@@ -1,9 +1,9 @@
 # Full stack PERN app 
 currently in development
-##Fully implemented:
+## Fully implemented:
 Express REST API
 JWT AUTH
 
-##In Progress
+## In Progress
 Front-end
 React
