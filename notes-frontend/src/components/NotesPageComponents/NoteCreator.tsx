@@ -37,7 +37,6 @@ export default function NoteCreator({setNotes} : NoteCreatorProps){
     React.useEffect(()=>{
         function handleTitleInput(e: MouseEvent){
             if( e.target instanceof Node && !formRef.current?.contains(e.target )){
-                console.log(note)
                 setIsActive(false)
             
 
