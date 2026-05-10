@@ -24,6 +24,7 @@ export async function getNotes(){
 }
 
 type note = {
+    id: number;
     title: string;
     content: string;
 }
@@ -31,7 +32,7 @@ export async function addNote(note : note) {
     //note comes here empty fix
     console.log(JSON.stringify(note))
 
-    await fetch(notesUrl,
+    const res = await fetch(notesUrl,
         {
             method : "post" ,
             headers: {
@@ -41,4 +42,6 @@ export async function addNote(note : note) {
             body : JSON.stringify(note)
         }
     )
+    const data = res.json()
+    return data
 }

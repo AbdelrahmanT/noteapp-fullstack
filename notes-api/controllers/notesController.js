@@ -11,7 +11,7 @@ export async function getAllNotes(req,res){
         `SELECT * FROM notes WHERE user_ID = ?`,
         [req.user.user_id]
     )
-    
+    console.log(notes)
     return res.status(200).json({notes})
 
     } catch (error) {

@@ -1,15 +1,13 @@
 import React from "react";
 import { addNote } from "../../services/userService";
-type NoteCreatorProps = {
-    note : {title : string; content: string}
-    setNote: React.Dispatch<React.SetStateAction<{
-        title: string;
-        content: string;
-    }>>
-}
 
-export default function NoteCreator(/*{note, setNote} : NoteCreatorProps*/){
-    const [note, setNote] = React.useState({title: "" , content: "" })
+type NoteCreatorProps = {
+    setNotes:   React.Dispatch<React.SetStateAction<Note[]>>
+}
+type Note = {id: number, title : string; content: string}
+
+export default function NoteCreator({setNotes} : NoteCreatorProps){
+    const [note, setNote] = React.useState<Note>({id: -1, title: "" , content: "" })
 
     const [isActive, setIsActive] = React.useState(false)
     const formRef = React.useRef<HTMLFormElement | null>(null)
@@ -28,8 +26,9 @@ export default function NoteCreator(/*{note, setNote} : NoteCreatorProps*/){
 
     React.useEffect(()=>{
         if( note.title && note.content && !isActive){
-            addNote(note).then(()=>{
-                setNote({title: "", content:""})
+            addNote(note).then((data)=>{
+                setNotes((prev)=>[...prev, data])
+                setNote({id: -1, title: "" , content: "" })
             }
             )
         }
