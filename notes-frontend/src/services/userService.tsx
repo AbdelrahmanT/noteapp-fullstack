@@ -28,7 +28,7 @@ type note = {
     title: string;
     content: string;
 }
-export async function addNote(note : note) {
+export async function addNote(note : Omit<note, "id">) {
     //note comes here empty fix
     console.log(JSON.stringify(note))
 
@@ -42,6 +42,28 @@ export async function addNote(note : note) {
             body : JSON.stringify(note)
         }
     )
-    const data = res.json()
+    const data = await res.json()
     return data
+}
+
+export async function deleteNote(id: number){
+    const res = await fetch(notesUrl+`/${id}`,
+        {
+            method : "delete",
+            headers: {
+                'authorization': `Bearer ${accessToken}`,
+                'Content-Type': "application/json"
+            },
+            
+        }
+    )
+    const data = await res.json()
+    if(!res.ok){
+        console.error(`error on deleting note ${data.error || data.message}`)
+        return data.error || data.message
+    }else{
+
+        console.log(data)
+    }
+
 }

@@ -37,13 +37,18 @@ export default function NotesPage(){
 
     }, [])
 
+    function deleteUINote(id: number){
+        setNotes(prev=> prev.filter( note=> note.id!==id))
+    }
+
     function renderNotes(){
         const notesList  = []
         
         for (const note of notes) {
+            note.content.includes(query) || note.title.includes(query)?
             notesList.push(
-                <Note key={note.id} {...note}/>
-            )
+                <Note key={note.id} deleteUINote={()=>{deleteUINote(note.id)}} {...note} />
+            ) : null
         }
         const notesSection =  <section className="notes-container">
                 {notesList.map(note=>note)}
@@ -60,7 +65,6 @@ export default function NotesPage(){
     return <>
         <SearchBar query= {query} setQuery={setQuery}/>
 
-        {/* <NoteCreator note = {newNote} setNote = {setNewNote}/> */}
         <NoteCreator setNotes= {setNotes}/>
         
         {

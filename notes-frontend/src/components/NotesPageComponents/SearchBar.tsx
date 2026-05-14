@@ -18,15 +18,15 @@ export default function SearchBar({query, setQuery}: SearchBarProps){
 
     return <>
     
-    <input
-        type="text"
-        name="query"
-        id="searchBar"
-        placeholder="Look up your notes here"
-        value={query}
-        onChange={handleChange}
-    
-    />
+        <input
+            type="text"
+            name="query"
+            id="searchBar"
+            placeholder="Look up your notes here"
+            value={query}
+            onChange={handleChange}
+        
+        />
     
     </>
     

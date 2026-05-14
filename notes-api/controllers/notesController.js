@@ -46,16 +46,25 @@ export async function addNote(req,res){
 }
 
 export async function deleteNote(req,res){
+    // requires :id param
     const db = await getDBConnection()
-    const noteId = req.params.id
-
-    try{
-
-        await db.run(`
-            DELETE FROM notes WHERE user_ID = ? AND id = ?`, [req.user.user_id,noteId])
-        
+    const noteId = +req.params.id
+    console.log(typeof(noteId));
     
-        return res.status(201).json({"message": "note deleted"})
+    try{
+        const noteRecieved = await db.get(
+            `SELECT title FROM notes WHERE user_ID = ? AND id = ?`, [req.user.user_id,noteId] 
+        )
+        const dbresp = await db.run(`
+            DELETE  FROM notes WHERE user_ID = ? AND id = ?`, [req.user.user_id,noteId])
+    
+        console.log(req.user.user_id);
+        console.log(noteRecieved); 
+        console.log(`deleted${noteId}`);
+        
+        
+        
+        return res.status(201).json({message: "note deleted"})
     }catch(err){
         console.error(`error on deleting note ${err}`)
         return res.status(500).json({error: `failure to delete note`})

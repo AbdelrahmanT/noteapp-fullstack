@@ -5,5 +5,8 @@ Express REST API
 JWT AUTH
 
 ## In Progress
-Front-end
-React
+FRONT-END:
+Editing notes
+
+BACK-END:
+switching to PostegreeSQL

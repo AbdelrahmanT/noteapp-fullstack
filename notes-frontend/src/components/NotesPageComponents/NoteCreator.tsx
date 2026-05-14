@@ -7,19 +7,19 @@ type NoteCreatorProps = {
 type Note = {id: number, title : string; content: string}
 
 export default function NoteCreator({setNotes} : NoteCreatorProps){
-    const [note, setNote] = React.useState<Note>({id: -1, title: "" , content: "" })
+    const [note, setNote] = React.useState<Omit<Note , "id">>({ title: "" , content: "" })
 
     const [isActive, setIsActive] = React.useState(false)
     const formRef = React.useRef<HTMLFormElement | null>(null)
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
         const {name, value} = e.target
         setNote(prev=>({
             ...prev,
             [name] : value
         }))
+        
     }
-    // console.log(note)
     function handleClick(e: React.MouseEvent<HTMLFormElement>) {
         setIsActive(prev=>!prev)
     }
@@ -28,7 +28,7 @@ export default function NoteCreator({setNotes} : NoteCreatorProps){
         if( note.title && note.content && !isActive){
             addNote(note).then((data)=>{
                 setNotes((prev)=>[...prev, data])
-                setNote({id: -1, title: "" , content: "" })
+                setNote({ title: "" , content: "" })
             }
             )
         }
@@ -50,8 +50,15 @@ export default function NoteCreator({setNotes} : NoteCreatorProps){
      },[])
 
     return (
-        <form className={`noteCreator ${isActive ? "isActive" : ""}`}  onFocus={()=>setIsActive(true)} ref={formRef} >
-            { isActive?
+        <form className={`noteCreator ${isActive ? "isActive" : ""}`}
+            onFocus={()=>setIsActive(true)}
+            ref={formRef}
+            onSubmit={(e)=>{
+                e.preventDefault()
+                setIsActive(false)
+            }}
+        >
+            { isActive || note.content !== ""?
                 <input
                 type="text"
                 name="title"
@@ -65,13 +72,14 @@ export default function NoteCreator({setNotes} : NoteCreatorProps){
             }
             
 
-            <input
-                type="text"
+            <textarea
                 name="content"
-                className="noteCreator-text"
+                className="noteCreator-content"
                 placeholder="Write a note"
                 value={note.content}
                 onChange={handleChange}
+                rows={1}
+                
             />
     
         </form>
