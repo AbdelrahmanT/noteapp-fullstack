@@ -14,12 +14,10 @@ export default function AuthRequired(){
                     }}
                 />
     }
-    return <div className="site-wrapper">
-                <main>
-                    <Outlet/>
+    return <main className="notesPage">
+            <Outlet/>
+        </main>
 
-                </main>
 
-            </div>
 
 }

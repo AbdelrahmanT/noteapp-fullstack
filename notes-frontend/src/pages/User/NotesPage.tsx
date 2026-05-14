@@ -20,9 +20,10 @@ export default function NotesPage(){
             try {
                 getNotes()
                     .then((data)=>{
-                        data.forEach((element : any)=>{
-                            setNotes(prev=>[...prev, {id: element.id, title: element.title, content: element.title}])
-                        })
+                        setNotes(data)
+                        // data.forEach((element : any)=>{
+                        //     setNotes(prev=>[...prev, {id: element.id, title: element.title, content: element.title}])
+                        // })
                     })
                     
             } catch (error) {
@@ -38,14 +39,13 @@ export default function NotesPage(){
 
     function renderNotes(){
         const notesList  = []
-        console.log(notes);
         
         for (const note of notes) {
             notesList.push(
                 <Note key={note.id} {...note}/>
             )
         }
-        const notesSection =  <section className="allNotes">
+        const notesSection =  <section className="notes-container">
                 {notesList.map(note=>note)}
             </section>
 

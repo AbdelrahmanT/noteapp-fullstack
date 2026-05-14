@@ -9,7 +9,7 @@ export default function Note({title, content}: Note){
     return (
         <div className="noteCard">
             <h1 className="noteCard-title">{title}</h1>
-            <p className="noteCard">{content}</p>
+            <p className="noteCard-note">{content}</p>
         </div>
     )
 
