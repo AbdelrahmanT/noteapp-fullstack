@@ -9,7 +9,7 @@ const PORT = 3000
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://your-frontend.vercel.app'
+  'https://noteapp-fullstack-uoxy.vercel.app/'
 ]
 
 app.use(cors({
