@@ -12,7 +12,7 @@ const allowedOrigins = [
   'https://noteapp-fullstack-uoxy.vercel.app'
 ]
 
-app.options('*', cors())
+
 
 app.use(cors({
   origin: allowedOrigins,
