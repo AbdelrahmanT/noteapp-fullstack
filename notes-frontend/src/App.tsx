@@ -13,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Layout/>}> {/*unproteced layouts*/}
+            
             <Route path="register" element={<RegisterPage/>}/>
             <Route path="login" element={<LoginPage/>}/> 
           </Route>
