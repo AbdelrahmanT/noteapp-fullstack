@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom"
-
+const API_URL =  import.meta.env.VITE_API_URL
 type User = {
     username: string ,
     email: string,
@@ -11,7 +11,7 @@ type User = {
 // }
 
 export async function loginUser(user: Omit<User, "email">){
-    const res = await fetch("http://localhost:3000/api/auth/login",
+    const res = await fetch(`${API_URL}/api/auth/login`,
         {method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -29,7 +29,7 @@ export async function loginUser(user: Omit<User, "email">){
 
 export async function registerUser(user: User){
     console.log(JSON.stringify(user))
-    const res = await fetch("http://localhost:3000/api/auth/register",
+    const res = await fetch(`${API_URL}/api/auth/register`,
         {method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -47,5 +47,4 @@ export async function registerUser(user: User){
 
 export async function logout(){
     localStorage.removeItem("accessToken")
-    Navigate({to : "/login"})
 }

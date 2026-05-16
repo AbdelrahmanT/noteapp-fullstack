@@ -1,5 +1,5 @@
 import React from "react";
-import {loginUser} from "../services/authService.tsx"
+import {loginUser, logout} from "../services/authService.tsx"
 import { useNavigate, useLocation, replace } from "react-router-dom";
 
 export default function LoginPage(){
@@ -15,6 +15,7 @@ export default function LoginPage(){
     async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>){
         e.preventDefault()
         setButtonStatus("submitting")
+        logout()
         loginUser(loginFormData)
             .then(()=>{
                 setLoginStatus("logged in")

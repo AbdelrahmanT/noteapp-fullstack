@@ -20,9 +20,7 @@ export default function NoteCreator({setNotes} : NoteCreatorProps){
         }))
         
     }
-    function handleClick(e: React.MouseEvent<HTMLFormElement>) {
-        setIsActive(prev=>!prev)
-    }
+   
 
     React.useEffect(()=>{
         if( note.title && note.content && !isActive){

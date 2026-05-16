@@ -47,7 +47,7 @@ export default function NotesPage(){
         for (const note of notes) {
             note.content.includes(query) || note.title.includes(query)?
             notesList.push(
-                <Note key={note.id} deleteUINote={()=>{deleteUINote(note.id)}} {...note} />
+                <Note key={note.id} deleteUINote={()=>{deleteUINote(note.id)}} /*editNote={()=>{} }*/ {...note} />
             ) : null
         }
         const notesSection =  <section className="notes-container">

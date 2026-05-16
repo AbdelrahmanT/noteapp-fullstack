@@ -49,19 +49,11 @@ export async function deleteNote(req,res){
     // requires :id param
     const db = await getDBConnection()
     const noteId = +req.params.id
-    console.log(typeof(noteId));
     
     try{
-        const noteRecieved = await db.get(
-            `SELECT title FROM notes WHERE user_ID = ? AND id = ?`, [req.user.user_id,noteId] 
-        )
         const dbresp = await db.run(`
             DELETE  FROM notes WHERE user_ID = ? AND id = ?`, [req.user.user_id,noteId])
     
-        console.log(req.user.user_id);
-        console.log(noteRecieved); 
-        console.log(`deleted${noteId}`);
-        
         
         
         return res.status(201).json({message: "note deleted"})

@@ -1,6 +1,7 @@
 import React from "react";
 import { deleteNote } from "../../services/userService";
 import TrashIcon from "../miscComponents/TrashIcon";
+import EditIcon from "../miscComponents/EditIcon";
 
 
 type Note = {id: number,title : string; content: string}
@@ -25,6 +26,11 @@ export default function Note( {id,title, content , deleteUINote}: NoteProps ){
     }
 
     React.useEffect(()=> {return ()=>{clearTimeout(timerRef.current)}},[])
+
+    function handleEdit(){
+        setIsEdit(prev=>!prev)
+    }
+
     // React.useEffect(
     //     ()=>{
     //         function handleUpdate(e: MouseEvent){
@@ -42,8 +48,21 @@ export default function Note( {id,title, content , deleteUINote}: NoteProps ){
 
     return (
         <div className="noteCard" ref= {noteRef} onClick={()=>{deleteConfirm && setDeleteConfirm(false)}}>
-            <h1 className="noteCard-title">{title}</h1>
-            <p className="noteCard-note">{content}</p>
+            {
+                isEdit?
+                <>
+                    <div className="fullScreenOverlay">
+                        hi
+                    </div>
+                </>:
+                <>
+                    <h1 className="noteCard-title">{title}</h1>
+                    <pre className="noteCard-note">{content}</pre>
+                </>
+            }
+            
+            
+            
             <button className="delete" onClick={handleDelete}>
                 {deleteConfirm?
                     <>
@@ -53,6 +72,12 @@ export default function Note( {id,title, content , deleteUINote}: NoteProps ){
                     </>
                     : <TrashIcon/>
                 } 
+            </button>
+            <button className="edit" onClick={()=>{isEdit? null:setIsEdit(true)}}>
+                {   isEdit?
+                    <><div>confirm</div><div onClick={()=>setIsEdit(false)}>cancel</div></>
+                    
+                    :<EditIcon/>}
             </button>
         </div>
     )
