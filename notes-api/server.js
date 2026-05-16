@@ -26,3 +26,11 @@ app.listen(PORT , ()=>{
     console.log(`LISTENING ON PORT ${PORT}`)
 
 })
+
+if(process.env.NODE_ENV !== "production"){
+  app.listen(PORT , ()=>{
+    console.log(`LISTENING ON PORT ${PORT}`)
+  })
+}
+
+export default app
